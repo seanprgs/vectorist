@@ -3,7 +3,10 @@ package models;
 public class Vector
 {
 	private Coordinates coordinates;
-	private double length;
+	private double magnitude;
+
+	// TODO: to be implemented
+	// private double direction;
 
 	public Vector(double x, double y) {
 		coordinates = new Coordinates(x, y);
@@ -11,11 +14,11 @@ public class Vector
 	}
 
 	public void cacheLength() {
-		length = Math.hypot(coordinates.getX(), coordinates.getY());
+		magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
 	}
 
-	public double getLength() {
-		return length;
+	public double getMagnitude() {
+		return magnitude;
 	}
 
 	public Coordinates getCoordinates() {

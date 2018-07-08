@@ -1,6 +1,5 @@
 package boostcli;
 
-import javax.lang.model.type.PrimitiveType;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,28 +12,27 @@ public class BoostCLI
 	/**
 	 * Prints a single line break.
 	 * */
-	public void p() {
+	public BoostCLI p() {
 		System.out.println();
+		return this;
 	}
 
 	/**
 	 * Prints a string on the console and goes to next line.
-	 *
-	 * @param print the string to be printed
+	 *  @param print the string to be printed
 	 * */
-	public void p(String print) {
+	public BoostCLI p(String print) {
 		System.out.println(print);
+		return this;
 	}
 
 	/**
 	 * Prints a string and prints next line for a set number of times.
 	 * A positive ln arg will print the line breaks after the string.
 	 * A negative ln arg will print the line breaks before the string.
-	 *
-	 * @param print the string to be printed
-	 * @param lines number of line breaks to be printed
-	 * */
-	public void p(String print, int lines) {
+	 *  @param print the string to be printed
+	 * @param lines number of line breaks to be printed */
+	public BoostCLI p(String print, int lines) {
 		if (lines < 0) {
 			for (; lines < 0; lines++) p("");
 			System.out.print(print);
@@ -42,16 +40,15 @@ public class BoostCLI
 			System.out.print(print);
 			for (; lines > 0; lines--) p("");
 		}
+		return this;
 	}
 
 	/**
 	 * Prints a responsive decoration around text. Uses the style's
 	 * default character theme.
-	 *
-	 * @param print	the string to be printed
-	 * @param style	the decoration style
-	 * */
-	public void p(String print, String style) {
+	 *  @param print    the string to be printed
+	 * @param style    the decoration style */
+	public BoostCLI p(String print, String style) {
 		if (style.equals("box")) {
 			styleBox(print);
 		}
@@ -73,17 +70,16 @@ public class BoostCLI
 		else {
 			styleQuickWrap(print, style);
 		}
+		return this;
 	}
 
 	/**
 	 * Prints a responsive decoration around text. Uses the param
 	 * character theme to replace main character used in theme.
-	 *
-	 * @param print		the string to be printed
-	 * @param style		the decoration style
-	 * @param charTheme the character to be replaced
-	 * */
-	public void p(String print, String style, String charTheme) {
+	 *  @param print        the string to be printed
+	 * @param style        the decoration style
+	 * @param charTheme the character to be replaced  */
+	public BoostCLI p(String print, String style, String charTheme) {
 		if(style.equals("pipe")) {
 			stylePipe(print, charTheme);
 		}
@@ -96,17 +92,16 @@ public class BoostCLI
 		else if(style.equals("pillar")) {
 			stylePillar(print, charTheme);
 		}
+		return this;
 	}
 
 	/**
 	 * Prints a responsive decoration around text. Uses the param
 	 * character theme to replace main character used in theme.
-	 *
-	 * @param print			the string to be printed
-	 * @param style			the decoration style
-	 * @param styleLength 	gives the style a fixed metric instead of being responsive
-	 * */
-	public void p(String print, String style, int styleLength) {
+	 *  @param print            the string to be printed
+	 * @param style            the decoration style
+	 * @param styleLength    gives the style a fixed metric instead of being responsive  */
+	public BoostCLI p(String print, String style, int styleLength) {
 		if (style.equals("box")) {
 			styleBox(print, styleLength);
 		}
@@ -128,18 +123,17 @@ public class BoostCLI
 		else {
 			styleQuickWrap(print, style, styleLength);
 		}
+		return this;
 	}
 
 	/**
 	 * Prints a responsive decoration around text. Uses the param
 	 * character theme to replace main character used in theme.
-	 *
-	 * @param print			the string to be printed
-	 * @param style			the decoration style
+	 *  @param print            the string to be printed
+	 * @param style            the decoration style
 	 * @param charTheme the character to be replaced
-	 * @param styleLength 	gives the style a fixed metric instead of being responsive
-	 * */
-	public void p(String print, String style, String charTheme, int styleLength) {
+	 * @param styleLength    gives the style a fixed metric instead of being responsive   */
+	public BoostCLI p(String print, String style, String charTheme, int styleLength) {
 		if(style.equals("pipe")) {
 			stylePipe(print, charTheme, styleLength);
 		}
@@ -152,76 +146,75 @@ public class BoostCLI
 		else if(style.equals("pillar")) {
 			stylePillar(print, charTheme, styleLength);
 		}
+		return this;
 	}
 
 
 	/**
 	 * Prints a string an indicated number of times.
-	 *
-	 * @param print		the string to be printed
-	 * @param amount    amount of times the string is to be printed
-	 * */
-	public void pp(String print, int amount) {
+	 *  @param print        the string to be printed
+	 * @param amount    amount of times the string is to be printed */
+	public BoostCLI pp(String print, int amount) {
 		String end = "";
 		if( amount < 0 ) end = "\n";
 		amount = Math.abs(amount);
 		for(; amount > 0; amount--) p(print, 0);
 		p(end, 0);
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
+	 *  @param list    the string to be printed
 	 * */
-	public void pl(String[] list) {
+	public BoostCLI pl(String[] list) {
 		for(String item : list) p(item);
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
+	 *  @param list    the string to be printed
 	 * */
-	public void pl(int[] list) {
+	public BoostCLI pl(int[] list) {
 		for(int item : list) p(String.valueOf(item));
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
+	 *  @param list    the string to be printed
 	 * */
-	public void pl(float[] list) {
+	public BoostCLI pl(float[] list) {
 		for(float item : list) p(String.valueOf(item));
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
+	 *  @param list    the string to be printed
 	 * */
-	public void pl(double[] list) {
+	public BoostCLI pl(double[] list) {
 		for(double item : list) p(String.valueOf(item));
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
-	 * @param style	the style of which the list is to be printed
-	 * */
-	public void pl(Object[] list, String style) {
+	 *  @param list    the string to be printed
+	 * @param style    the style of which the list is to be printed */
+	public BoostCLI pl(Object[] list, String style) {
 		for(Object item : list) p(String.valueOf(item));
+		return this;
 	}
 
 	/**
 	 * Iterates through a list and prints the String associated with the index.
-	 *
-	 * @param list	the string to be printed
+	 *  @param list    the string to be printed
 	 * */
-	public void pl(List<String> list) {
+	public BoostCLI pl(List<String> list) {
 		for(String item : list) p(item);
+		return this;
 	}
 
 	/**
@@ -309,13 +302,14 @@ public class BoostCLI
 	public String toString() {
 		String info = "";
 		info += "BoostCLI\n";
-		info += "Version 0.5.3\n";
+		info += "Version 0.6.3\n";
 		info += "by Patrick Latorre";
 		return info;
 	}
 
-	public void version() {
+	public BoostCLI version() {
 		p(toString(), "pipe", 20);
+		return this;
 	}
 
 	/* PRIVATE METHODS */
@@ -337,74 +331,54 @@ public class BoostCLI
 
 	private void styleBox(String s) {
 		int width = s.length();
-		p("+-", 0);
-		pp("-", width);
-		p("-+");
+		p("+-", 0).pp("-", width).p("-+");
 		stylePillar(s, width+2);
-		p("+-", 0);
-		pp("-", width);
-		p("-+");
+		p("+-", 0).pp("-", width).p("-+");
 	}
 
 	private void styleBox(String s, int styleLength) {
 		String paddedString = replaceInnerSpaces(s, styleLength);
 		int fullWidth = paddedString.length();
-		p("+", 0);
-		pp("-", fullWidth);
-		p("+");
+		p("+", 0).pp("-", fullWidth).p("+");
 		stylePillar(paddedString, styleLength);
-		p("+", 0);
-		pp("-", fullWidth);
-		p("+");
+		p("+", 0).pp("-", fullWidth).p("+");
 	}
 
 	private void styleBoxAppend(String s) {
 		int width = s.length();
 		stylePillar(s, width+2);
-		p("+-", 0);
-		pp("-", width);
-		p("-+");
+		p("+-", 0).pp("-", width).p("-+");
 	}
 
 	private void styleBoxAppend(String s, int styleLength) {
 		String paddedString = replaceInnerSpaces(s, styleLength);
 		int fullWidth = paddedString.length();
 		stylePillar(paddedString, styleLength);
-		p("+", 0);
-		pp("-", fullWidth);
-		p("+");
+		p("+", 0).pp("-", fullWidth).p("+");
 	}
 
 	private void stylePipe(String print) {
-		pp("=", print.length());
-		p();
+		pp("=", print.length()).p();
 		p(print);
-		pp("=", print.length());
-		p();
+		pp("=", print.length()).p();
 	}
 
 	private void stylePipe(String print, int styleLength) {
-		pp("=", styleLength);
-		p();
+		pp("=", styleLength).p();
 		p(print);
-		pp("=", styleLength);
-		p();
+		pp("=", styleLength).p();
 	}
 
 	private void stylePipe(String print, String charTheme) {
-		pp(charTheme, print.length());
-		p();
+		pp(charTheme, print.length()).p();
 		p(print);
-		pp(charTheme, print.length());
-		p();
+		pp(charTheme, print.length()).p();
 	}
 
 	private void stylePipe(String print, String charTheme, int styleLength) {
-		pp(charTheme, styleLength);
-		p();
+		pp(charTheme, styleLength).p();
 		p(print);
-		pp(charTheme, styleLength);
-		p();
+		pp(charTheme, styleLength).p();
 	}
 
 	private void stylePillarTab(String print) {
