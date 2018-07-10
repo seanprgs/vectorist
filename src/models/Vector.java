@@ -2,53 +2,25 @@ package models;
 
 public class Vector
 {
+	private String name;
 	private Coordinates coordinates;
 	private double magnitude;
 
 	// TODO: to be implemented
 	// private double direction;
-
 	public Vector(double x, double y) {
+		this.name = "#";
 		coordinates = new Coordinates(x, y);
-		cacheLength();
+		cacheMagnitude();
 	}
 
-	public void cacheLength() {
-		magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
+	public Vector(String name, double x, double y) {
+		this.name = name;
+		coordinates = new Coordinates(x, y);
+		cacheMagnitude();
 	}
 
-	public double getMagnitude() {
-		return magnitude;
-	}
-
-	public Coordinates getCoordinates() {
-		return coordinates;
-	}
-
-	public void setCoordinates(Coordinates coordinates) {
-		this.coordinates = coordinates;
-		cacheLength();
-	}
-
-	public void setX(double x) {
-		coordinates.setX(x);
-		cacheLength();
-	}
-
-	public void setY(double y) {
-		coordinates.setY(y);
-		cacheLength();
-	}
-
-	public double getX() {
-		return coordinates.getX();
-	}
-
-	public double getY() {
-		return coordinates.getY();
-	}
-
-	public String toString(String plotter) {
+	public String plot() {
 		String str = "";
 		int size;
 
@@ -61,7 +33,7 @@ public class Vector
 			str += i + "\t";
 			for (int j = 0; j<size; j++) {
 				if (j == coordinates.getX() && i == coordinates.getY()) {
-					str += plotter + "\t";
+					str += name + "\t";
 				} else {
 					str += "-\t";
 				}
@@ -80,5 +52,86 @@ public class Vector
 		}
 
 		return str;
+	}
+
+	/*
+	* OPERATIONS
+	* */
+	public static Vector add(Vector... args) {
+		double sumX=0, sumY=0;
+
+		for (Vector v : args) {
+			sumX = sumX + v.getX();
+			sumY = sumY + v.getY();
+		}
+
+		return new Vector(sumX, sumY);
+	}
+
+	public static Vector scale(Vector vector, double multiplier) {
+		scaleX(vector, multiplier);
+		scaleY(vector, multiplier);
+		return vector;
+	}
+
+	public static Vector scaleX(Vector vector, double multiplier) {
+		vector.setX(vector.getX() * multiplier);
+		return vector;
+	}
+
+	public static Vector scaleY(Vector vector, double multiplier) {
+		vector.setY(vector.getY() * multiplier);
+		return vector;
+	}
+
+
+	/*
+	* HELPER METHODS
+	* */
+	public void cacheMagnitude() {
+		magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
+	}
+
+
+	/*
+	* GETTERS AND SETTERS
+	* */
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getMagnitude() {
+		return magnitude;
+	}
+
+	public Coordinates getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
+		cacheMagnitude();
+	}
+
+	public void setX(double x) {
+		coordinates.setX(x);
+		cacheMagnitude();
+	}
+
+	public void setY(double y) {
+		coordinates.setY(y);
+		cacheMagnitude();
+	}
+
+	public double getX() {
+		return coordinates.getX();
+	}
+
+	public double getY() {
+		return coordinates.getY();
 	}
 }
