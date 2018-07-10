@@ -74,14 +74,34 @@ public class Vector
 		return vector;
 	}
 
+	public Vector scale(double multiplier) {
+		scaleX(this, multiplier);
+		scaleY(this, multiplier);
+		return this;
+	}
+
 	public static Vector scaleX(Vector vector, double multiplier) {
 		vector.setX(vector.getX() * multiplier);
+		vector.cacheMagnitude();
 		return vector;
+	}
+
+	public Vector scaleX(double multiplier) {
+		setX(getX() * multiplier);
+		cacheMagnitude();
+		return this;
 	}
 
 	public static Vector scaleY(Vector vector, double multiplier) {
 		vector.setY(vector.getY() * multiplier);
+		vector.cacheMagnitude();
 		return vector;
+	}
+
+	public Vector scaleY(double multiplier) {
+		setY(getY() * multiplier);
+		cacheMagnitude();
+		return this;
 	}
 
 
