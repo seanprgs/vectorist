@@ -1,9 +1,10 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class VectorSingleton {
-
-	public static class Main {
+public class Milestone1
+{
+	public static class Driver
+	{
 		public static void main(String[] args) {
 			BoostCLI io = new BoostCLI();
 
@@ -17,13 +18,12 @@ public class VectorSingleton {
 		}
 	}
 
-	public static class Vector {
+	public static class Vector
+	{
 		private String name;
 		private Coordinates coordinates;
 		private double magnitude;
 
-		// TODO: to be implemented
-		// private double direction;
 		public Vector(double x, double y) {
 			this.name = "#";
 			coordinates = new Coordinates(x, y);
@@ -70,9 +70,7 @@ public class VectorSingleton {
 			return str;
 		}
 
-		/*
-		* OPERATIONS
-		* */
+		/* OPERATIONS */
 		public static Vector add(Vector... args) {
 			double sumX=0, sumY=0;
 
@@ -121,17 +119,13 @@ public class VectorSingleton {
 		}
 
 
-		/*
-		* HELPER METHODS
-		* */
+		/* HELPER METHODS */
 		public void cacheMagnitude() {
 			magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
 		}
 
 
-		/*
-		* GETTERS AND SETTERS
-		* */
+		/* GETTERS AND SETTERS */
 		public String getName() {
 			return name;
 		}
@@ -172,7 +166,8 @@ public class VectorSingleton {
 		}
 	}
 
-	public static class Coordinates {
+	public static class Coordinates
+	{
 		private double x;
 		private double y;
 
@@ -198,7 +193,8 @@ public class VectorSingleton {
 		}
 	}
 
-	public static class BoostCLI {
+	public static class BoostCLI
+	{
 		private Scanner sc;
 		/**
 		 * Prints a single line break.
