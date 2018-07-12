@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,125 +9,83 @@ public class Milestone1
 	{
 		public static void main(String[] args) {
 			BoostCLI io = new BoostCLI();
-
-			Vector a = new Vector(4, 1);
-			Vector b = new Vector(6, 7);
-			Vector c = new Vector(12, 15);
-
-			io.p(a.plot(), 2);
-			io.p(b.plot(), 2);
-			io.p(c.plot(), 2);
 		}
 	}
 
 	public static class Vector
 	{
+		public static final int X = 0;
+		public static final int Y = 1;
+		public static final int Z = 2;
+
 		private String name;
-		private Coordinates coordinates;
-		private double magnitude;
+		private double[] coordinates;
+		private int dimensionality;
 
-		public Vector(double x, double y) {
+		public Vector(double... args) {
 			this.name = "#";
-			coordinates = new Coordinates(x, y);
-			cacheMagnitude();
+			coordinates = new double[args.length];
+			setCoordinates(args);
+			dimensionality = coordinates.length;
 		}
 
-		public Vector(String name, double x, double y) {
+		public Vector(String name, double... args) {
 			this.name = name;
-			coordinates = new Coordinates(x, y);
-			cacheMagnitude();
+			coordinates = new double[args.length];
+			setCoordinates(args);
+			dimensionality = coordinates.length;
 		}
 
-		public String plot() {
-			String str = "";
-			int size;
-
-			if (coordinates.getX() >= coordinates.getY())
-				size = (int) (Math.round(coordinates.getX()) + 2);
-			else
-				size = (int) (Math.round(coordinates.getY()) + 2);
-
-			for (int i = size; i>=0; i--) {
-				str += i + "\t";
-				for (int j = 0; j<size; j++) {
-					if (j == coordinates.getX() && i == coordinates.getY()) {
-						str += name + "\t";
-					} else {
-						str += "-\t";
-					}
-				}
-				str += "\n";
-
-				if(i == 0) {
-					for (int k = 0; k<size+1; k++) {
-						if(k == 0) {
-							str += " \t";
-						} else {
-							str += (k-1) + "\t";
-						}
-					}
-				}
+		public void setCoordinates(double... args) {
+			int i = 0;
+			for (double c : args) {
+				coordinates[i] = c;
+				i++;
 			}
-
-			return str;
 		}
 
 		/* OPERATIONS */
 		public static Vector add(Vector... args) {
-			double sumX=0, sumY=0;
+			int totalCoors = args[0].getDimensionality();
+			double[] sum = new double[args[0].getDimensionality()];
 
-			for (Vector v : args) {
-				sumX = sumX + v.getX();
-				sumY = sumY + v.getY();
-			}
+			for (int k=0; k<totalCoors; k++)
+				sum[k] = 0;
 
-			return new Vector(sumX, sumY);
+			for (int i = 0; i < args.length; i++)
+				for (int j = 0; j < totalCoors; j++)
+					sum[j] = sum[j] + args[i].getCoordinates()[j];
+
+			return new Vector(sum);
 		}
 
-		public static Vector scale(Vector vector, double multiplier) {
-			scaleX(vector, multiplier);
-			scaleY(vector, multiplier);
+		public static Vector scaleVector(Vector vector, double multiplier) {
+			for (int i = 0; i < vector.getDimensionality(); i++)
+				vector.scaleCoordinate(i, multiplier);
 			return vector;
 		}
 
-		public Vector scale(double multiplier) {
-			scaleX(this, multiplier);
-			scaleY(this, multiplier);
+		public Vector scaleVector(double multiplier) {
+			for (int i = 0; i < dimensionality; i++)
+				scaleCoordinate(i, multiplier);
 			return this;
 		}
 
-		public static Vector scaleX(Vector vector, double multiplier) {
-			vector.setX(vector.getX() * multiplier);
-			vector.cacheMagnitude();
+		public static Vector scaleCoordinate(Vector vector, double multiplier, int coordinate) {
+			vector.setCoordinate(coordinate, vector.getCoordinates()[coordinate]*multiplier);
 			return vector;
 		}
 
-		public Vector scaleX(double multiplier) {
-			setX(getX() * multiplier);
-			cacheMagnitude();
+		public Vector scaleCoordinate(int coordinate, double multiplier) {
+			setCoordinate(coordinate, getCoordinates()[coordinate]*multiplier);
 			return this;
 		}
-
-		public static Vector scaleY(Vector vector, double multiplier) {
-			vector.setY(vector.getY() * multiplier);
-			vector.cacheMagnitude();
-			return vector;
-		}
-
-		public Vector scaleY(double multiplier) {
-			setY(getY() * multiplier);
-			cacheMagnitude();
-			return this;
-		}
-
-
-		/* HELPER METHODS */
-		public void cacheMagnitude() {
-			magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
-		}
-
 
 		/* GETTERS AND SETTERS */
+		public void setCoordinate(int coordinate, double coordinateVal) {
+			coordinates[coordinate] = coordinateVal;
+		}
+
 		public String getName() {
 			return name;
 		}
@@ -134,62 +94,32 @@ public class Milestone1
 			this.name = name;
 		}
 
-		public double getMagnitude() {
-			return magnitude;
+		public int getDimensionality() {
+			return dimensionality;
 		}
 
-		public Coordinates getCoordinates() {
+		public double[] getCoordinates() {
 			return coordinates;
 		}
 
-		public void setCoordinates(Coordinates coordinates) {
-			this.coordinates = coordinates;
-			cacheMagnitude();
+		@Override
+		public String toString() {
+			String str = "";
+
+			str += name + " : [";
+			for (int i = 0; i < coordinates.length; i++) {
+				if (i > 0)
+					str += ", ";
+				str += coordinates[i];
+			}
+			str += "]";
+
+			return str;
 		}
 
-		public void setX(double x) {
-			coordinates.setX(x);
-			cacheMagnitude();
-		}
-
-		public void setY(double y) {
-			coordinates.setY(y);
-			cacheMagnitude();
-		}
-
-		public double getX() {
-			return coordinates.getX();
-		}
-
-		public double getY() {
-			return coordinates.getY();
-		}
-	}
-
-	public static class Coordinates
-	{
-		private double x;
-		private double y;
-
-		public Coordinates(double x, double y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		public double getX() {
-			return x;
-		}
-
-		public void setX(double x) {
-			this.x = x;
-		}
-
-		public double getY() {
-			return y;
-		}
-
-		public void setY(double y) {
-			this.y = y;
+		@Override
+		public Vector clone() {
+			return new Vector(name, coordinates);
 		}
 	}
 
@@ -680,6 +610,183 @@ public class Milestone1
 			for(int i = 0; i < styleLength; i++)
 				p(" ", 0);
 			p(splitWrap[1], 0);
+		}
+	}
+
+	@Deprecated
+	public static class OldVector
+	{
+		private String name;
+		private Coordinates coordinates;
+		private double magnitude;
+
+		public OldVector(double x, double y) {
+			this.name = "#";
+			coordinates = new Coordinates(x, y);
+			cacheMagnitude();
+		}
+
+		public OldVector(String name, double x, double y) {
+			this.name = name;
+			coordinates = new Coordinates(x, y);
+			cacheMagnitude();
+		}
+
+		public String plot() {
+			String str = "";
+			int size;
+
+			if (coordinates.getX() >= coordinates.getY())
+				size = (int) (Math.round(coordinates.getX()) + 2);
+			else
+				size = (int) (Math.round(coordinates.getY()) + 2);
+
+			for (int i = size; i>=0; i--) {
+				str += i + "\t";
+				for (int j = 0; j<size; j++) {
+					if (j == coordinates.getX() && i == coordinates.getY()) {
+						str += name + "\t";
+					} else {
+						str += "-\t";
+					}
+				}
+				str += "\n";
+
+				if(i == 0) {
+					for (int k = 0; k<size+1; k++) {
+						if(k == 0) {
+							str += " \t";
+						} else {
+							str += (k-1) + "\t";
+						}
+					}
+				}
+			}
+
+			return str;
+		}
+
+		/* OPERATIONS */
+		public static OldVector add(OldVector... args) {
+			double sumX=0, sumY=0;
+
+			for (OldVector v : args) {
+				sumX = sumX + v.getX();
+				sumY = sumY + v.getY();
+			}
+
+			return new OldVector(sumX, sumY);
+		}
+
+		public static OldVector scale(OldVector vector, double multiplier) {
+			scaleX(vector, multiplier);
+			scaleY(vector, multiplier);
+			return vector;
+		}
+
+		public OldVector scale(double multiplier) {
+			scaleX(this, multiplier);
+			scaleY(this, multiplier);
+			return this;
+		}
+
+		public static OldVector scaleX(OldVector vector, double multiplier) {
+			vector.setX(vector.getX() * multiplier);
+			vector.cacheMagnitude();
+			return vector;
+		}
+
+		public OldVector scaleX(double multiplier) {
+			setX(getX() * multiplier);
+			cacheMagnitude();
+			return this;
+		}
+
+		public static OldVector scaleY(OldVector vector, double multiplier) {
+			vector.setY(vector.getY() * multiplier);
+			vector.cacheMagnitude();
+			return vector;
+		}
+
+		public OldVector scaleY(double multiplier) {
+			setY(getY() * multiplier);
+			cacheMagnitude();
+			return this;
+		}
+
+
+		/* HELPER METHODS */
+		public void cacheMagnitude() {
+			magnitude = Math.hypot(coordinates.getX(), coordinates.getY());
+		}
+
+
+		/* GETTERS AND SETTERS */
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public double getMagnitude() {
+			return magnitude;
+		}
+
+		public Coordinates getCoordinates() {
+			return coordinates;
+		}
+
+		public void setCoordinates(Coordinates coordinates) {
+			this.coordinates = coordinates;
+			cacheMagnitude();
+		}
+
+		public void setX(double x) {
+			coordinates.setX(x);
+			cacheMagnitude();
+		}
+
+		public void setY(double y) {
+			coordinates.setY(y);
+			cacheMagnitude();
+		}
+
+		public double getX() {
+			return coordinates.getX();
+		}
+
+		public double getY() {
+			return coordinates.getY();
+		}
+	}
+
+	@Deprecated
+	public static class Coordinates
+	{
+		private double x;
+		private double y;
+
+		public Coordinates(double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public double getX() {
+			return x;
+		}
+
+		public void setX(double x) {
+			this.x = x;
+		}
+
+		public double getY() {
+			return y;
+		}
+
+		public void setY(double y) {
+			this.y = y;
 		}
 	}
 }
